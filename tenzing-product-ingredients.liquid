@@ -1,0 +1,257 @@
+{% assign ingredients_bg = '' %}
+{% assign ingredients_text = '' %}
+
+{% for tag in product.tags %}
+
+	{% if tag contains 'ingredients-bg:' %}
+
+		{% assign ingredients_bg = tag | remove: 'ingredients-bg:' %}
+
+	{% endif %}
+
+	{% if tag == 'ingredients-text-white' %}
+
+		{% assign ingredients_text = 'it-white' %}
+
+	{% endif %}
+
+{% endfor %}
+
+{% assign hasIngredients = false %}
+
+{% for block in section.blocks %}
+
+	{% assign bs = block.settings %}
+
+	{% for tag in product.tags %}
+
+		{% if tag contains 'ingredient:' %}
+
+			{% assign hasIngredients = true %}
+
+		{% endif %}
+
+	{% endfor %}
+
+{% endfor %}
+
+
+{% assign ss = section.settings %}
+
+<section class="product-ingredients-section {{ ingredients_text }}" {% if ingredients_bg != blank %}style="background-color:{{ ingredients_bg }};"{% endif %}>
+	
+	<div class="fluid">
+		
+		<div class="grid-x {% unless hasIngredients %}jcenter no-ings{% endunless %}">
+			
+			<div class="cell large-4 {% if hasIngredients %}large-offset-1{% endif %} medium-12 small-12 content">
+				
+				{% if ss.title != blank %}
+					<h3 class="title">{{ ss.title }}</h3>
+				{% endif %}
+
+				{{ ss.overview }}
+
+				<div class="btn-flex">
+					<a href="#" class="j-toggle-nutritionals btn white">{{ ss.btn-text }}</a>
+				</div>
+
+				{% if hasIngredients %}
+
+					<div class="slick-arrow-controls">
+						<a href="#" class="slick-alt-prev j-ingredients-carousel-arrow-prev"></a>
+						<a href="#" class="slick-alt-next j-ingredients-carousel-arrow-next"></a>
+					</div>
+
+				{% endif %}
+
+			</div>
+
+			{% if hasIngredients %}
+
+				<div class="cell large-7 medium-12 small-12 ingredients">
+
+					<div class="ingredients-carousel j-ingredients-carousel">
+						
+						{% for block in section.blocks %}
+
+							{% assign bs = block.settings %}
+
+							{% for tag in product.tags %}
+
+								{% if tag contains 'ingredient:' %}
+
+									{% assign ing = tag | remove: 'ingredient:' %}
+
+									{% if ing == bs.tag-name %}
+
+										<div class="item">
+								
+											{% if bs.image != blank %}
+												<div data-mh="ingredient-image">{% render 'responsive-image' with image: bs.image, wrapper_class: "image-wrap" %}</div>
+											{% endif %}
+
+											{% if bs.title != blank %}
+												<h5 class="title">{{ bs.title }}</h5>
+											{% endif %}
+
+											{% if bs.overview != blank %}
+												<p>{{ bs.overview }}</p>
+											{% endif %}
+
+										</div>
+
+									{% endif %}
+
+								{% endif %}
+
+							{% endfor %}
+
+						{% endfor %}
+
+					</div>
+
+				</div>
+
+			{% endif %}
+
+		</div>
+
+	</div>
+
+</section>
+
+{% assign pm = product.metafields %}
+
+<section class="nutritionals-drawer">
+
+	<a href="#" class="close-icon j-toggle-nutritionals"></a>
+	
+	{% if pm['product']['nutritional-info'] != blank %}
+
+		<div class="block">
+			
+			<div class="header">
+
+				<h6 class="title">Nutritional Information</h6>
+
+				{% if pm['product']['nutritional-serving'] != blank %}
+					<p class="serving">{{ pm['product']['nutritional-serving'] }}</p>
+				{% endif %}
+
+			</div>
+
+			<div class="output ni">
+				{{ pm['product']['nutritional-info'] }}
+			</div>
+
+		</div>
+
+	{% endif %}
+
+	{% if pm['product']['ingredients'] != blank %}
+
+		<div class="block">
+			
+			<div class="header">
+				<h6 class="title">Ingredients</h6>
+			</div>
+
+			<div class="output">
+				{{ pm['product']['ingredients'] }}
+			</div>
+
+		</div>
+
+	{% endif %}
+
+	{% if pm['recipe']['ingredients'] != blank %}
+
+		<div class="block">
+			
+			<div class="header">
+
+				{% if pm['recipe']['title'] != blank %}
+					<h6 class="title">{{ pm['recipe']['title'] }}</h6>
+				{% endif %}
+
+				{% if pm['recipe']['serving'] != blank %}
+					<p class="serving">{{ pm['recipe']['serving'] }}</p>
+				{% endif %}
+
+			</div>
+
+			<div class="output ni">
+				{{ pm['recipe']['ingredients'] }}
+			</div>
+
+		</div>
+
+	{% endif %}
+
+</section>
+
+
+{% schema %}
+  {
+    "name": "Ingredient & Nutritional",
+
+    "settings": [
+
+        {
+            "type": "textarea",
+            "id": "title",
+            "label": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "overview",
+            "label": "Overview"
+        },
+        {
+            "type": "text",
+            "id": "btn-text",
+            "label": "Nutritional button text",
+            "default": "View Nutritional Info"
+        }
+        
+    ],
+
+    "blocks": [
+     
+        {
+            "type": "ingredient",
+            "name": "Ingredient",
+            "settings": [
+                
+                {
+                    "type": "text",
+                    "id": "tag-name",
+                    "label": "Tag name",
+                    "info": "eg: adding lemon in this field would require you to add 'ingredient:lemon' on the product page as a tag."
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Ingredient title"
+                },
+                {
+                    "type": "textarea",
+                    "id": "overview",
+                    "label": "Ingredient description"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Ingredient image",
+                    "info": "Recommended size: 230x140 in png format"
+                }
+
+            ]
+
+        }
+
+    ]
+
+  }
+{% endschema %}

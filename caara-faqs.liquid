@@ -1,0 +1,124 @@
+<section class="glossary-template faqs-template">
+
+	<div class="fluid">
+		
+		{% if section.settings.title != blank %}
+			<h1 class="h2 section-title">{{ section.settings.title }}</h1>
+		{% endif %}
+
+		<div class="glossary-form">
+
+			<div class="letter-filter j-scrollto-faq-cat">
+				
+				{% for block in section.blocks %}
+
+					{% if block.settings.category != blank %}
+
+						{% if block.settings.is_first %}
+
+							<span data-cat="{{ block.settings.category | handleize }}">{{ block.settings.category }}</span>
+
+						{% endif %}
+
+					{% endif %}
+
+				{% endfor %}
+
+			</div>
+
+			<form class="form-filter j-form-faq-filter">
+				
+				<input type="text" placeholder="Start typing">
+
+			</form>
+
+		</div><!-- brand-a-z-filter -->
+
+		<div class="grid-x jcenter">
+
+			<div class="cell large-6 medium-10 small-12 blocks">
+				
+				{% for block in section.blocks %}
+
+					<div class="value-block cat-{{ block.settings.category | handleize }}">
+
+						{% if block.settings.is_first %}
+
+							{% if block.settings.category != blank %}
+								<span class="starter">{{ block.settings.category }}</span>
+							{% endif %}
+
+						{% endif %}
+						
+						{% if block.settings.title != blank %}
+							<h3 class="h2 title j-toggle-glossary-accordion">{{ block.settings.title }}</h3>
+						{% endif %}
+
+						<div class="content">
+							{{ block.settings.content }}
+						</div>
+
+					</div>
+
+				{% endfor %}
+
+			</div>
+
+		</div>
+
+	</div>
+
+</section>
+
+
+{% schema %}
+  {
+    "name": "FAQs",
+
+    "settings": [
+
+        {
+            "type": "textarea",
+            "id": "title",
+            "label": "Title"
+        }
+        
+    ],
+
+    "blocks": [
+     
+        {
+            "type": "block",
+            "name": "Block",
+            "settings": [
+                
+                {
+		            "type": "checkbox",
+		            "id": "is_first",
+		            "default": false,
+		            "label": "Is the first of item"
+		        },
+		        {
+                    "type": "text",
+                    "id": "category",
+                    "label": "Category"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content"
+                }
+
+            ]
+
+        }
+
+    ]
+
+  }
+{% endschema %}

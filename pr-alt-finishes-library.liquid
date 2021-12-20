@@ -1,0 +1,134 @@
+<script>
+    
+    if(typeof window.alt_finishes != 'undefined' && !!window.alt_finishes){
+
+    } else {
+        window.alt_finishes = [];
+    }
+
+</script>
+
+{% if template == 'product' %}
+
+    {% render 'product-alt-finishes-dropdown' %}
+
+{% elsif template == 'collection' %}
+
+    {% render 'alt-finishes-data' %}
+
+{% else %}
+    
+    {% render 'made-to-order' %}
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Alt Finishes library",
+
+     "settings": [       
+        
+    ],
+
+    "blocks": [
+
+        {
+            "type": "open_section",
+            "name": "Open Section",
+            "settings": [
+                
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Section title"
+                },
+                {
+                    "type":"checkbox",
+                    "id":"hide_from_mto",
+                    "label":"Hide from view?",
+                    "default":false,
+                    "info":"Tick to hide this entire section from view on the made to order page. (The data will still be used on the product detail page dropdowns)"
+                }
+
+            ]
+
+        }, 
+
+        {
+            "type": "close_section",
+            "name": "Close Section",
+            "settings": [
+                
+                {
+                    "type": "paragraph",
+                    "content": "This block will close the section."
+                }
+
+            ]
+
+        },                
+     
+        {
+            "type": "alt_finish",
+            "name": "Alt Finish",
+            "settings": [
+                {
+                    "type":"checkbox",
+                    "id":"hide_from_mto",
+                    "label":"Hide from view?",
+                    "default":false,
+                    "info":"Tick to hide this finish from view on the made to order page. (The data will still be used on the product detail page dropdowns)"
+                },                
+                {
+                    "type": "text",
+                    "id": "handle",
+                    "label": "Handle",
+                    "info": "Required field. Must be filled in. Must ensure that this field is unique. (This value is used to associate the made-to-order variants with the correct data on the product detail page and other pages)"
+                },                                  
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },                
+		        {
+		            "type": "richtext",
+		            "id": "description",
+		            "label": "Description"
+		        },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Main Image",
+                    "info": "Recommended size: 600W x 600H in px"
+                },
+                {
+                  "type": "color",
+                  "id": "finish_colour",
+                  "label": "Colour",
+                  "default": "#000000"
+                },
+                {
+                    "type": "richtext",
+                    "id": "main_image_caption",
+                    "label": "Main Image - Caption"
+                },                
+                {
+                    "type": "image_picker",
+                    "id": "second_image",
+                    "label": "Secondary Image",
+                    "info": "Recommended size: 750W x 450H in px"
+                },
+                {
+                    "type": "richtext",
+                    "id": "second_image_caption",
+                    "label": "Secondary Image - Caption"
+                }                
+
+            ]
+
+        }
+
+    ]
+
+  }
+{% endschema %}

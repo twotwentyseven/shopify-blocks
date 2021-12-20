@@ -1,0 +1,60 @@
+{% if template == 'product' %}
+
+    {% render 'product-colour-swatches' %}
+    
+    <div class="product-base-colour-dropdown hidden" style="display: none;">
+        {% render 'product-colour-dropdown' %}
+    </div>
+
+{% elsif template == 'collection' %}
+
+    {% render 'colours-data' %}
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Colour library",
+
+     "settings": [       
+        
+    ],
+
+    "blocks": [             
+     
+        {
+            "type": "colour",
+            "name": "Base colour",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "handle",
+                    "label": "Handle",
+                    "info": "Must ensure that this field is unique. (This value is used to associate the colour variants with the correct data on the product detail page)"
+                },                                  
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title"
+                },
+                {
+                  "type": "color",
+                  "id": "colour",
+                  "label": "Colour",
+                  "default": "#000000"
+                },          
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "Main Image",
+                    "info": "Recommended size: 750W x 450H in px"
+                }
+
+            ]
+
+        }
+
+    ]
+
+  }
+{% endschema %}
